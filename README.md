@@ -72,7 +72,82 @@ User authentication mechanisms are essential to ensure secure and authorized acc
 Client-server chat applications are versatile tools that facilitate real-time communication between users over a network. They incorporate various components, including server-side and client-side elements, and must consider factors such as security, scalability, and concurrency. As technology continues to advance, client-server chat applications remain integral for collaborative communication in various domains.
 
 Client-server chat applications are foundational to real-time communication over networks. They incorporate principles of socket programming, communication protocols, and security mechanisms to provide a seamless user experience. Understanding the basics of client-server chat applications is essential for developers involved in networked application development, as they form the backbone of various collaborative communication systems. As technology evolves, chat applications continue to adapt, incorporating new features and technologies to enhance user interaction and connectivity.
+## Program:
 
+Server.py
+```
+import socket
+
+s = socket.socket()
+
+host = "127.0.0.1"
+port = 8080
+
+print("Server will start on host:", host)
+
+s.bind((host, port))
+s.listen(1)
+
+print()
+print("Waiting for connection...")
+print()
+
+conn, addr = s.accept()
+print(addr, "has connected to the server")
+print()
+
+while True:
+    message = input(">> ")
+    conn.send(message.encode())
+    print("Sent")
+    print()
+
+    if message.lower() == "bye":
+        break
+
+    incoming_message = conn.recv(1024).decode()
+    print("Client:", incoming_message)
+    print()
+
+    if incoming_message.lower() == "bye":
+        break
+
+conn.close()
+s.close()
+
+```
+
+Client.py
+```
+import socket
+
+s = socket.socket()
+
+host = input("Enter hostname or host IP: ")
+port = 8080
+
+s.connect((host, port))
+print("Connected to chat server")
+
+while True:
+    incoming_message = s.recv(1024).decode()
+    print("Server:", incoming_message)
+    print()
+
+    message = input(">> ")
+    s.send(message.encode())
+    print("Sent")
+    print()
+
+    if message.lower() == "bye":
+        break
+
+s.close()
+       
+```
+
+## Output:
+<img width="1043" height="555" alt="Screenshot 2026-05-19 115029" src="https://github.com/user-attachments/assets/6e7cfe3e-8614-4140-b720-26e864ddfdf3" />
 
 ## Result:
 
